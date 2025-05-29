@@ -106,15 +106,14 @@ def format_report(loader, config, versions_to_include, title=None,
             if notes:
                 report.extend(
                     get_parent_section_headers(
-                        section, section_reported, parent_section, version_title, title, branch
+                        section,
+                        section_reported,
+                        parent_section,
+                        version_title,
+                        title,
+                        branch,
                     )
                 )
-                report.append(_section_anchor(
-                    section.title, version_title, title, branch))
-                report.append('')
-                report.append(section.title)
-                report.append(section.header_underline())
-                report.append('')
                 for n, fn, sha in notes:
                     if show_source:
                         report.append('.. %s @ %s\n' % (fn, sha))
@@ -132,17 +131,26 @@ def get_parent_section_headers(
     title,
     branch,
 ):
-    """Given a section, follow the hierarchy up to each parent and ensure
-    it has been reported."""
+    """Get headers for a section and its parents.
+
+    Given a section, follow the hierarchy up to each parent and ensure it has
+    been reported. If a parent section has not been reported yet, it should
+    be reported now.
+
+    """
     sections_to_report = []
     current_section = starting_section
     while current_section and not section_reported[current_section]:
-        sections_to_report.append(_section_anchor(current_section.title, version_title, title, branch))
+        sections_to_report.append(current_section)
         section_reported[current_section] = True
-        current_section = parent_section.get(section)
+        current_section = parent_section.get(current_section)
     headers = []
     for section in reversed(sections_to_report):
-        headers.append(section)
+        headers.append(
+            _section_anchor(
+                section.title, version_title, title, branch
+            )
+        )
         headers.append('')
         headers.append(section.title)
         headers.append(section.header_underline())

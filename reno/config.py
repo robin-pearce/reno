@@ -455,7 +455,10 @@ class Config:
                 parent_section[section] = last_section_at_level[1]
                 last_section_at_level[2] = section
             elif section.section_level == 3:
-                parent_section[section] = last_section_at_level[2] or last_section_at_level[1]
+                parent_section[section] = (
+                    last_section_at_level[2]
+                    or last_section_at_level[1]
+                )
         return parent_section
 
 # def parse_config_into(parsed_arguments):

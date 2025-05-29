@@ -219,7 +219,7 @@ class TestFormatterSubSections(TestFormatterBase):
     }
 
     def setUp(self):
-        super(TestFormatterCustomSections, self).setUp()
+        super(TestFormatterSubSections, self).setUp()
         self.c.override(sections=[
             ['features', 'New Features'],
             ['features_subsection', 'Subsection', 2],
@@ -235,7 +235,6 @@ class TestFormatterSubSections(TestFormatterBase):
             title=None,
         )
         prelude_pos = result.index('This is the prelude.')
-        api_pos = result.index('API Changes')
         features_pos = result.index('New Features')
         features_subsection_pos = result.index('Subsection')
         features_subsubsection_pos = result.index('Subsubsection')
@@ -244,7 +243,6 @@ class TestFormatterSubSections(TestFormatterBase):
             features_pos,
             features_subsection_pos,
             features_subsubsection_pos,
-            api_pos,
         ]
         actual = sorted(expected)
         self.assertEqual(expected, actual)

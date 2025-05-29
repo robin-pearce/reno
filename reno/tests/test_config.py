@@ -251,9 +251,22 @@ class TestConfigProperties(base.TestCase):
         self.assertEqual('i-am-a-template', self.c.template)
 
     def test_parent_section(self):
-        section_by_name = {section.name: section for section in self.c.sections}
-        self.assertEqual(section_by_name['features'], self.c.parent_section('features_sub'))
-        self.assertEqual(section_by_name['features_sub'], self.c.parent_section('features_subsub'))
-        self.assertEqual(section_by_name['bugs'], self.c.parent_section('bugs_sub'))
+        section_by_name = {
+            section.name: section for section in self.c.sections
+        }
+        self.assertEqual(
+            section_by_name['features'],
+            self.c.parent_section[section_by_name['features_sub']],
+        )
+        self.assertEqual(
+            section_by_name['features_sub'],
+            self.c.parent_section[section_by_name['features_subsub']],
+        )
+        self.assertEqual(
+            section_by_name['bugs'],
+            self.c.parent_section[section_by_name['bugs_sub']],
+        )
         for section_name in ['features', 'bugs', 'documentation']:
-            self.assertIsNone(self.c.parent_section(section_name))
+            self.assertIsNone(
+                self.c.parent_section[section_by_name[section_name]]
+            )
